@@ -230,7 +230,7 @@ const Ebooks = () => {
 
                 {/* Pagination Controls */}
                 {totalPages > 1 && (
-                  <div className="mt-12 flex items-center justify-center gap-2">
+                  <div className="mt-12 flex flex-wrap items-center justify-center gap-2">
                     <button
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}
@@ -240,7 +240,7 @@ const Ebooks = () => {
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     
-                    <div className="flex gap-1">
+                    <div className="flex flex-wrap justify-center gap-1">
                       {Array.from({ length: totalPages }).map((_, i) => (
                         <button
                           key={i}
