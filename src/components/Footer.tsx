@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen } from 'lucide-react';
+
 import { useState, useEffect } from 'react';
 
 const Footer = () => {
@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2 text-white">
-              <BookOpen className="w-8 h-8 text-primary-500" />
+              <img src="/favicon.png" alt="Logo EbookStore" className="w-8 h-8 object-contain" />
               <span className="font-bold text-xl tracking-tight">EbookStore</span>
             </Link>
             <p className="text-sm text-slate-400">
