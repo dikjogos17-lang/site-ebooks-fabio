@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model AdminUser {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  lastLogin DateTime?
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  ebooks      Ebook[]
+}
+
+model Ebook {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  author          String
+  categoryId      String
+  category        Category @relation(fields: [categoryId], references: [id])
+  description     String
+  fullDescription String
+  capa            String
+  link            String?
+  rating          Float    @default(0)
+  pages           Int      @default(0)
+  language        String   @default("Português")
+  format          String   @default("PDF")
+  publishDate     String
+  views           Int      @default(0)
+  featured        Boolean  @default(false)
+  status          String   @default("published")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
