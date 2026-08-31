@@ -25,7 +25,7 @@ const EbookCard: React.FC<EbookCardProps> = ({ ebook }) => {
       
       <div className="p-3 sm:p-5 flex flex-col flex-grow">
         <span className="px-2 py-1 bg-primary-50 text-primary-700 rounded text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2 sm:mb-3 inline-block">
-          {ebook.category?.name || ebook.category}
+          {ebook.category}
         </span>
         <h3 className="text-sm sm:text-lg font-bold text-slate-900 leading-tight mb-1 line-clamp-2">
           <Link to={`/ebook/${ebook.id}`} className="hover:text-primary-600 transition-colors focus:outline-none">

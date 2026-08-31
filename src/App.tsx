@@ -15,12 +15,6 @@ import Contact from './pages/Contact';
 import Reader from './pages/Reader';
 import NotFound from './pages/NotFound';
 
-import Login from './pages/admin/Login';
-import AdminLayout from './pages/admin/AdminLayout';
-import Dashboard from './pages/admin/Dashboard';
-import EbooksManager from './pages/admin/EbooksManager';
-import CategoriesManager from './pages/admin/CategoriesManager';
-
 // ScrollToTop component
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -41,14 +35,6 @@ function App() {
         <Routes>
           {/* Reader Route without Navbar/Footer */}
           <Route path="/read/:id" element={<Reader />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<Login />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="ebooks" element={<EbooksManager />} />
-            <Route path="categories" element={<CategoriesManager />} />
-          </Route>
 
           {/* Main App Routes with Navbar/Footer */}
           <Route path="*" element={

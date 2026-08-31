@@ -1,32 +1,15 @@
-import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, BookOpen, Star } from 'lucide-react';
+import { BookOpen, Star, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import EbookCard from '../components/EbookCard';
 import SEO from '../components/SEO';
+import { ebooks } from '../data/ebooks';
 
 const Home = () => {
   const navigate = useNavigate();
-  const [ebooks, setEbooks] = useState<any[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      fetch('/api/ebooks').then(r => r.json()),
-      fetch('/api/categories').then(r => r.json())
-    ]).then(([ebooksData, catsData]) => {
-      if (!ebooksData.error) setEbooks(ebooksData);
-      if (!catsData.error) setCategories(catsData.map((c: any) => c.name));
-      setLoading(false);
-    }).catch(err => {
-      console.error(err);
-      setLoading(false);
-    });
-  }, []);
-
   const featuredEbook = ebooks.find(e => e.featured) || ebooks[0];
-  const popularEbooks = [...ebooks].sort((a, b) => b.views - a.views).slice(0, 6);
+  const popularEbooks = [...ebooks].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 6);
+  const categories = Array.from(new Set(ebooks.flatMap(e => e.category)));
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -42,18 +25,6 @@ const Home = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <SEO title="Carregando..." />
-        <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-slate-500">Carregando...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -123,7 +94,7 @@ const Home = () => {
             </div>
             <div className="w-full md:w-2/3 space-y-4">
               <div className="text-sm font-semibold text-primary-600 uppercase tracking-wider">
-                {featuredEbook.category?.name || featuredEbook.category}
+                {featuredEbook.category}
               </div>
               <h3 className="text-3xl font-bold text-slate-900">
                 {featuredEbook.title}

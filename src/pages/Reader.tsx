@@ -1,30 +1,22 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Settings, Type, ZoomIn, ZoomOut } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { ebooks } from '../data/ebooks';
 
 const Reader = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [ebook, setEbook] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const ebook = ebooks.find(e => e.id === id || e.slug === id);
   const [fontSize, setFontSize] = useState(18);
   const [theme, setTheme] = useState<'light' | 'sepia' | 'dark'>('light');
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/ebooks/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) navigate('/ebooks');
-        else setEbook(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        navigate('/ebooks');
-      });
-  }, [id, navigate]);
+    if (!ebook) {
+      navigate('/ebooks');
+    }
+  }, [ebook, navigate]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
   if (!ebook) return null;
 
   const increaseFont = () => setFontSize((prev) => Math.min(prev + 2, 32));

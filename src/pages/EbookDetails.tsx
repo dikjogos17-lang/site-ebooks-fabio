@@ -4,38 +4,23 @@ import { Star, BookOpen, Download, FileText, Globe, Calendar, Heart, Eye, ArrowL
 import { toast, Toaster } from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
+import { ebooks } from '../data/ebooks';
 
 const EbookDetails = () => {
   const { id } = useParams();
   const [ebook, setEbook] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [views, setViews] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Fetch from API
-    fetch(`/api/ebooks/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!data.error) {
-          // Adjust data structure if needed
-          data.category = data.category?.name || data.category || 'Estudos Bíblicos';
-          setEbook(data);
-          
-          const favorites = JSON.parse(localStorage.getItem('ebooks_favorites') || '[]');
-          setIsFavorite(favorites.includes(data.id));
-          
-          // Simulate views increment
-          setViews(data.views + Math.floor(Math.random() * 10) + 1);
-        }
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
+    const foundEbook = ebooks.find(e => e.id === id || e.slug === id);
+    if (foundEbook) {
+      setEbook(foundEbook);
+      const favorites = JSON.parse(localStorage.getItem('ebooks_favorites') || '[]');
+      setIsFavorite(favorites.includes(foundEbook.id));
+      setViews(foundEbook.views || Math.floor(Math.random() * 10) + 1);
+    }
   }, [id]);
 
   const toggleFavorite = () => {
@@ -89,18 +74,6 @@ const EbookDetails = () => {
       toast.error('Erro ao gerar PDF.');
     });
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <SEO title="Carregando..." />
-        <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-slate-500">Carregando e-book...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (!ebook) {
     return (

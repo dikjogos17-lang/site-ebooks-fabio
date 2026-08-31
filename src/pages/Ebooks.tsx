@@ -4,6 +4,8 @@ import { Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EbookCard from '../components/EbookCard';
 import SEO from '../components/SEO';
+import { ebooks } from '../data/ebooks';
+import { categories } from '../data/categories';
 
 const ITEMS_PER_PAGE = 8; // Increased slightly for better grid
 
@@ -12,25 +14,10 @@ const Ebooks = () => {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('filter') || 'recentes');
-  
-  const [ebooks, setEbooks] = useState<any[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
 
   // Pagination state
   const currentPageParam = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(isNaN(currentPageParam) || currentPageParam < 1 ? 1 : currentPageParam);
-
-  useEffect(() => {
-    Promise.all([
-      fetch('/api/ebooks').then(r => r.json()),
-      fetch('/api/categories').then(r => r.json())
-    ]).then(([ebooksData, catsData]) => {
-      if (!ebooksData.error) setEbooks(ebooksData);
-      if (!catsData.error) setCategories(catsData.map((c: any) => c.name));
-    }).catch(err => {
-      console.error(err);
-    });
-  }, []);
 
   useEffect(() => {
     setSearchQuery(searchParams.get('q') || '');
@@ -67,7 +54,7 @@ const Ebooks = () => {
   const filteredEbooks = useMemo(() => {
     return ebooks
       .filter(ebook => {
-        const catName = ebook.category?.name || ebook.category || '';
+        const catName = ebook.category || '';
         
         const matchesSearch = searchQuery === '' || 
           ebook.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -79,12 +66,12 @@ const Ebooks = () => {
         return matchesSearch && matchesCategory;
       })
       .sort((a, b) => {
-        if (sortBy === 'populares') return b.views - a.views;
+        if (sortBy === 'populares') return (b.views || 0) - (a.views || 0);
         if (sortBy === 'avaliacao') return b.rating - a.rating;
         // Recentes
         return new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
       });
-  }, [ebooks, searchQuery, selectedCategory, sortBy]);
+  }, [searchQuery, selectedCategory, sortBy]);
 
   // Pagination Logic
   const totalPages = Math.ceil(filteredEbooks.length / ITEMS_PER_PAGE);
