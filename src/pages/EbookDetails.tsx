@@ -130,22 +130,63 @@ const EbookDetails = () => {
               </div>
               
               <div className="w-full space-y-3">
-                <Link 
-                  to={`/read/${ebook.id}`}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                  aria-label={`Ler o e-book ${ebook.title} agora`}
-                >
-                  <BookOpen className="w-5 h-5" aria-hidden="true" />
-                  Ler E-book
-                </Link>
-                <button 
-                  onClick={handleDownload}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
-                  aria-label={`Baixar e-book ${ebook.title} em PDF`}
-                >
-                  <Download className="w-5 h-5" aria-hidden="true" />
-                  Baixar PDF
-                </button>
+                {ebook.isPaid ? (
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-5 text-center shadow-sm">
+                    <p className="text-sm font-semibold text-green-800 mb-1 uppercase tracking-wide">E-book Premium</p>
+                    <p className="text-xl font-bold text-green-900 mb-4">{ebook.price || "Pago"}</p>
+                    
+                    <div className="bg-white p-4 rounded-lg border border-green-100 mb-4 mx-auto w-48 h-48 flex items-center justify-center">
+                      <img 
+                        src={`https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${ebook.pixKey}&choe=UTF-8`} 
+                        alt="QR Code do PIX" 
+                        className="w-full h-full"
+                      />
+                    </div>
+                    
+                    <p className="text-xs text-green-700 mb-2 font-medium">Ou pague usando a chave PIX:</p>
+                    <div className="bg-white p-3 rounded-lg border border-green-100 flex items-center justify-between mb-5 shadow-sm">
+                      <span className="font-mono font-bold text-green-900 tracking-wider text-base">{ebook.pixKey}</span>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(ebook.pixKey);
+                          toast.success('Chave PIX copiada!');
+                        }}
+                        className="text-xs bg-green-100 text-green-800 font-bold px-3 py-1.5 rounded-md hover:bg-green-200 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
+                        aria-label="Copiar chave PIX"
+                      >
+                        Copiar
+                      </button>
+                    </div>
+                    
+                    <a 
+                      href={`https://wa.me/5511919125076?text=Ol%C3%A1%2C%20fiz%20o%20pagamento%20do%20E-book%20%22${encodeURIComponent(ebook.title)}%22%20e%20gostaria%20de%20receber%20o%20acesso%21`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-all shadow-md hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    >
+                      Enviar Comprovante
+                    </a>
+                  </div>
+                ) : (
+                  <>
+                    <Link 
+                      to={`/read/${ebook.id}`}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                      aria-label={`Ler o e-book ${ebook.title} agora`}
+                    >
+                      <BookOpen className="w-5 h-5" aria-hidden="true" />
+                      Ler E-book
+                    </Link>
+                    <button 
+                      onClick={handleDownload}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                      aria-label={`Baixar e-book ${ebook.title} em PDF`}
+                    >
+                      <Download className="w-5 h-5" aria-hidden="true" />
+                      Baixar PDF
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             
