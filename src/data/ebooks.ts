@@ -16,6 +16,7 @@ export interface Ebook {
   slug?: string;
   isPaid?: boolean;
   pixKey?: string;
+  pixPayload?: string;
   price?: string;
 }
 
@@ -37,8 +38,8 @@ export const ebooks: Ebook[] = [
     "views": 0,
     "slug": "um-familiar-vai-reconhecer-o-outro-na-eternidade",
     "isPaid": true,
-    "pixKey": "14792297842",
-    "price": "R$ 15,00"
+    "price": "R$ 3,00",
+    "pixPayload": "00020126330014br.gov.bcb.pix01111479229784252040000530398654043.005802BR5911Fabio Russo6009Sao Paulo62070503***63044FCF"
   },
   {
     "id": "6c3714a5-7c2b-442a-9398-bd231931df99",

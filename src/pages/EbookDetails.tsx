@@ -137,26 +137,22 @@ const EbookDetails = () => {
                     
                     <div className="bg-white p-4 rounded-lg border border-green-100 mb-4 mx-auto w-48 h-48 flex items-center justify-center">
                       <img 
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${ebook.pixKey}`} 
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(ebook.pixPayload || ebook.pixKey)}`} 
                         alt="QR Code do PIX" 
                         className="w-full h-full"
                       />
                     </div>
                     
-                    <p className="text-xs text-green-700 mb-2 font-medium">Ou pague usando a chave PIX:</p>
-                    <div className="bg-white p-3 rounded-lg border border-green-100 flex items-center justify-between mb-5 shadow-sm">
-                      <span className="font-mono font-bold text-green-900 tracking-wider text-base">{ebook.pixKey}</span>
-                      <button 
-                        onClick={() => {
-                          navigator.clipboard.writeText(ebook.pixKey);
-                          toast.success('Chave PIX copiada!');
-                        }}
-                        className="text-xs bg-green-100 text-green-800 font-bold px-3 py-1.5 rounded-md hover:bg-green-200 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
-                        aria-label="Copiar chave PIX"
-                      >
-                        Copiar
-                      </button>
-                    </div>
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText(ebook.pixPayload || ebook.pixKey);
+                        toast.success('Pix Copia e Cola copiado com sucesso!');
+                      }}
+                      className="w-full text-sm bg-green-100 text-green-800 font-bold px-4 py-3 rounded-lg border border-green-200 hover:bg-green-200 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 mb-4"
+                      aria-label="Copiar código PIX"
+                    >
+                      Copiar código PIX (Copia e Cola)
+                    </button>
                     
                     <a 
                       href={`https://wa.me/5511919125076?text=Ol%C3%A1%2C%20fiz%20o%20pagamento%20do%20E-book%20%22${encodeURIComponent(ebook.title)}%22%20e%20gostaria%20de%20receber%20o%20acesso%21`} 
