@@ -19,7 +19,16 @@ const EbookDetails = () => {
       setEbook(foundEbook);
       const favorites = JSON.parse(localStorage.getItem('ebooks_favorites') || '[]');
       setIsFavorite(favorites.includes(foundEbook.id));
-      setViews(foundEbook.views || Math.floor(Math.random() * 10) + 1);
+      
+      // Simulate coherent view tracking
+      const localViewsKey = `views_${foundEbook.id}`;
+      let extraViews = parseInt(localStorage.getItem(localViewsKey) || '0');
+      
+      // Increment view count for this visit
+      extraViews += 1;
+      localStorage.setItem(localViewsKey, extraViews.toString());
+      
+      setViews((foundEbook.views || 100) + extraViews);
     }
   }, [id]);
 

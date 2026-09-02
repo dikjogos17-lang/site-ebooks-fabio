@@ -35,7 +35,7 @@ export const ebooks: Ebook[] = [
     "format": "PDF, EPUB",
     "publishDate": "2026-09-02",
     "featured": true,
-    "views": 0,
+    "views": 1053,
     "slug": "um-familiar-vai-reconhecer-o-outro-na-eternidade",
     "isPaid": true,
     "price": "R$ 3,00",
