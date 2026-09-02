@@ -137,7 +137,7 @@ const EbookDetails = () => {
                     
                     <div className="bg-white p-4 rounded-lg border border-green-100 mb-4 mx-auto w-48 h-48 flex items-center justify-center">
                       <img 
-                        src={`https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${ebook.pixKey}&choe=UTF-8`} 
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${ebook.pixKey}`} 
                         alt="QR Code do PIX" 
                         className="w-full h-full"
                       />
