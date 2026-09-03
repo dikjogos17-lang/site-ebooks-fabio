@@ -5,6 +5,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
 import { ebooks } from '../data/ebooks';
+import Tesseract from 'tesseract.js';
 
 const EbookDetails = () => {
   const { id } = useParams();
@@ -15,15 +16,37 @@ const EbookDetails = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
 
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setReceiptFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setReceiptFile(file);
       setIsAnalyzing(true);
-      setTimeout(() => {
+      
+      try {
+        // Run OCR on the image
+        const result = await Tesseract.recognize(file, 'por');
+        const text = result.data.text.toLowerCase();
+        
+        // Remove special chars for easier matching
+        const normalizedText = text.replace(/[^a-z0-9]/g, '');
+        
+        const hasFabio = normalizedText.includes('fabio');
+        const hasRusso = normalizedText.includes('russo');
+        const hasAzevedo = normalizedText.includes('azevedo');
+        
+        // We require finding Fabio Russo Azevedo
+        if (hasFabio && hasRusso && hasAzevedo) {
+          setIsAnalyzing(false);
+          setIsApproved(true);
+          toast.success('Pagamento validado! E-book liberado com sucesso.');
+        } else {
+          setIsAnalyzing(false);
+          toast.error('Comprovante inválido. Não encontramos o recebedor "Fabio Russo Azevedo" na imagem. Envie o comprovante original do banco.');
+        }
+      } catch (error) {
         setIsAnalyzing(false);
-        setIsApproved(true);
-        toast.success('Pagamento Aprovado! E-book liberado.');
-      }, 3000);
+        toast.error('Erro ao ler a imagem. Tente enviar um comprovante mais nítido.');
+      }
     }
   };
 
@@ -182,7 +205,7 @@ const EbookDetails = () => {
                       {isAnalyzing ? (
                         <div className="flex flex-col items-center justify-center py-4 space-y-3">
                           <Loader2 className="w-8 h-8 text-green-600 animate-spin" />
-                          <p className="text-green-800 font-medium animate-pulse">Analisando comprovante...</p>
+                          <p className="text-green-800 font-medium animate-pulse text-center">Lendo comprovante com IA...<br/><span className="text-xs">(Isso pode levar alguns segundos)</span></p>
                         </div>
                       ) : (
                         <div>
