@@ -32,16 +32,25 @@ const EbookDetails = () => {
         
         const hasFabio = normalizedText.includes('fabio');
         const hasRusso = normalizedText.includes('russo');
+        const hasDe = normalizedText.includes('de');
         const hasAzevedo = normalizedText.includes('azevedo');
         
-        // We require finding Fabio Russo Azevedo
-        if (hasFabio && hasRusso && hasAzevedo) {
+        // We require finding Fabio Russo De Azevedo
+        if (hasFabio && hasRusso && hasDe && hasAzevedo) {
           setIsAnalyzing(false);
           setIsApproved(true);
           toast.success('Pagamento validado! E-book liberado com sucesso.');
         } else {
           setIsAnalyzing(false);
-          toast.error('Comprovante inválido. Não encontramos o recebedor "Fabio Russo Azevedo" na imagem. Envie o comprovante original do banco.');
+          toast.error('❌ COMPROVANTE INVÁLIDO! Nosso sistema antifraude não identificou o pagamento legítimo para Fabio Russo De Azevedo. O acesso foi bloqueado.', {
+            duration: 6000,
+            style: {
+              border: '1px solid #ef4444',
+              padding: '16px',
+              color: '#991b1b',
+              fontWeight: 'bold'
+            },
+          });
         }
       } catch (error) {
         setIsAnalyzing(false);

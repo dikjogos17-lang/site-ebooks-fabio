@@ -39,7 +39,7 @@ export const ebooks: Ebook[] = [
     "slug": "um-familiar-vai-reconhecer-o-outro-na-eternidade",
     "isPaid": true,
     "price": "R$ 3,00",
-    "pixPayload": "00020126330014br.gov.bcb.pix01111479229784252040000530398654043.005802BR5911Fabio Russo6009Sao Paulo62070503***63044FCF"
+    "pixPayload": "00020126330014br.gov.bcb.pix01111479229784252040000530398654043.005802BR5922Fabio Russo De Azevedo6009Sao Paulo62070503***63043AE2"
   },
   {
     "id": "6c3714a5-7c2b-442a-9398-bd231931df99",
