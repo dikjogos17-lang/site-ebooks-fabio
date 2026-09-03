@@ -110,8 +110,8 @@ const EbookDetails = () => {
       doc.text(`Autor: ${ebook.author}`, 20, 50);
       
       doc.setFontSize(12);
-      const content = ebook.fullDescription || ebook.description;
-      const splitText = doc.splitTextToSize(content, 170);
+      const contentText = ebook.content || ebook.fullDescription || ebook.description;
+      const splitText = doc.splitTextToSize(contentText, 170);
       
       let y = 70;
       for (let i = 0; i < splitText.length; i++) {
