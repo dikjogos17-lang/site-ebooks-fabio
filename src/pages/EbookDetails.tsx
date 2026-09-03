@@ -5,6 +5,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
 import { ebooks } from '../data/ebooks';
+import EbookReviews from '../components/EbookReviews';
 import Tesseract from 'tesseract.js';
 
 const EbookDetails = () => {
@@ -335,6 +336,7 @@ const EbookDetails = () => {
             </div>
           </div>
         </motion.article>
+        <EbookReviews ebookId={ebook.id} baseRating={ebook.rating} />
       </div>
     </main>
   );
