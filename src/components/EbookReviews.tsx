@@ -29,38 +29,8 @@ const EbookReviews: React.FC<Props> = ({ ebookId, baseRating }) => {
     const localReviews = JSON.parse(localStorage.getItem('reviews_' + ebookId) || '[]');
     setHasReviewed(localReviews.some((r: any) => r.isLocalUser));
     
-    // Generate some fake base reviews if none exist
-    let baseReviews = JSON.parse(localStorage.getItem('base_reviews_' + ebookId) || 'null');
     
-    if (!baseReviews) {
-      const names = ['Ana Silva', 'Carlos Eduardo', 'Maria Santos', 'João Paulo', 'Beatriz Costa', 'Rafael Souza', 'Camila Oliveira', 'Fernando Almeida'];
-      const comments = [
-        'Excelente leitura! Mudou muito a minha visão sobre o assunto. Recomendo!',
-        'Muito bom, bem escrito e direto ao ponto.',
-        'Conteúdo muito profundo e edificante. Me ajudou bastante.',
-        'Gostei muito. A linguagem é acessível e o material é de primeira.',
-        'Livro maravilhoso! Deus abençoe.',
-        'Material riquíssimo, parabéns ao autor pelo trabalho.',
-        'Vale cada centavo, um conteúdo que agrega muito valor espiritual.',
-        'Leitura indispensável para quem busca conhecimento verdadeiro.'
-      ];
-      
-      const numReviews = Math.floor(Math.random() * 4) + 2; // 2 to 5 reviews
-      baseReviews = [];
-      
-      for(let i = 0; i < numReviews; i++) {
-        baseReviews.push({
-          id: 'base_' + i,
-          name: names[Math.floor(Math.random() * names.length)],
-          rating: Math.random() > 0.2 ? 5 : 4,
-          comment: comments[Math.floor(Math.random() * comments.length)],
-          date: new Date(Date.now() - Math.random() * 10000000000).toISOString()
-        });
-      }
-      localStorage.setItem('base_reviews_' + ebookId, JSON.stringify(baseReviews));
-    }
-    
-    setReviews([...baseReviews, ...localReviews].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    setReviews([...localReviews].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
   }, [ebookId]);
 
   const handleSubmit = (e: React.FormEvent) => {
