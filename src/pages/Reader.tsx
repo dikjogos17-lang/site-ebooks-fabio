@@ -91,7 +91,7 @@ const Reader = () => {
           className="prose prose-slate max-w-none transition-all duration-300"
           style={{ fontSize: `${fontSize}px`, lineHeight: 1.8 }}
         >
-          {(ebook.fullDescription || ebook.description).split('\n\n').map((paragraph: string, idx: number) => (
+          {(ebook.content || ebook.fullDescription || ebook.description).split('\n\n').map((paragraph: string, idx: number) => (
             <p key={idx} className="mb-6 last:mb-0">
               {paragraph}
             </p>
