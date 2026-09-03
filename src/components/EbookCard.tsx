@@ -24,9 +24,16 @@ const EbookCard: React.FC<EbookCardProps> = ({ ebook }) => {
       </Link>
       
       <div className="p-3 sm:p-5 flex flex-col flex-grow">
-        <span className="px-2 py-1 bg-primary-50 text-primary-700 rounded text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2 sm:mb-3 inline-block">
-          {ebook.category}
-        </span>
+        <div className="flex flex-wrap items-center gap-2 mb-2 sm:mb-3">
+          <span className="px-2 py-1 bg-primary-50 text-primary-700 rounded text-[10px] sm:text-xs font-semibold uppercase tracking-wider inline-block">
+            {ebook.category}
+          </span>
+          {ebook.isPaid && (
+            <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-[10px] sm:text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-1">
+              Premium
+            </span>
+          )}
+        </div>
         <h3 className="text-sm sm:text-lg font-bold text-slate-900 leading-tight mb-1 line-clamp-2">
           <Link to={`/ebook/${ebook.id}`} className="hover:text-primary-600 transition-colors focus:outline-none">
             {ebook.title}
