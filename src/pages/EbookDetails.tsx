@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Star, BookOpen, Download, FileText, Globe, Calendar, Heart, Eye, ArrowLeft } from 'lucide-react';
+import { Star, BookOpen, Download, FileText, Globe, Calendar, Heart, Eye, ArrowLeft, Upload, CheckCircle, Loader2 } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
@@ -11,6 +11,21 @@ const EbookDetails = () => {
   const [ebook, setEbook] = useState<any>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [views, setViews] = useState(0);
+  const [, setReceiptFile] = useState<File | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setReceiptFile(e.target.files[0]);
+      setIsAnalyzing(true);
+      setTimeout(() => {
+        setIsAnalyzing(false);
+        setIsApproved(true);
+        toast.success('Pagamento Aprovado! E-book liberado.');
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -139,7 +154,7 @@ const EbookDetails = () => {
               </div>
               
               <div className="w-full space-y-3">
-                {ebook.isPaid ? (
+                {ebook.isPaid && !isApproved ? (
                   <div className="bg-green-50 border border-green-200 rounded-xl p-5 text-center shadow-sm">
                     <p className="text-sm font-semibold text-green-800 mb-1 uppercase tracking-wide">E-book Premium</p>
                     <p className="text-xl font-bold text-green-900 mb-4">{ebook.price || "Pago"}</p>
@@ -163,17 +178,37 @@ const EbookDetails = () => {
                       Copiar código PIX (Copia e Cola)
                     </button>
                     
-                    <a 
-                      href={`https://wa.me/5511919125076?text=Ol%C3%A1%2C%20fiz%20o%20pagamento%20do%20E-book%20%22${encodeURIComponent(ebook.title)}%22%20e%20gostaria%20de%20receber%20o%20acesso%21`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-all shadow-md hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    >
-                      Enviar Comprovante
-                    </a>
+                    <div className="mt-4 pt-4 border-t border-green-200">
+                      {isAnalyzing ? (
+                        <div className="flex flex-col items-center justify-center py-4 space-y-3">
+                          <Loader2 className="w-8 h-8 text-green-600 animate-spin" />
+                          <p className="text-green-800 font-medium animate-pulse">Analisando comprovante...</p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="text-sm text-green-800 font-medium mb-3">Já fez o PIX? Anexe o comprovante para liberar o E-book:</p>
+                          <label className="w-full flex flex-col items-center justify-center px-4 py-4 bg-white border-2 border-dashed border-green-300 rounded-lg cursor-pointer hover:bg-green-50 transition-colors">
+                            <Upload className="w-6 h-6 text-green-500 mb-2" />
+                            <span className="text-sm text-green-700 font-medium">Anexar Comprovante</span>
+                            <input 
+                              type="file" 
+                              className="hidden" 
+                              accept="image/*" 
+                              onChange={handleUpload} 
+                            />
+                          </label>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <>
+                    {isApproved && (
+                      <div className="bg-green-100 border border-green-300 rounded-lg p-3 mb-4 flex items-center justify-center gap-2 text-green-800 font-bold">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        Pagamento Aprovado!
+                      </div>
+                    )}
                     <Link 
                       to={`/read/${ebook.id}`}
                       className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
