@@ -31,20 +31,22 @@ const EbookDetails = () => {
         // Remove special chars for easier matching
         const normalizedText = text.replace(/[^a-z0-9]/g, '');
         
-        const hasFabio = normalizedText.includes('fabio');
-        const hasRusso = normalizedText.includes('russo');
-        const hasDe = normalizedText.includes('de');
-        const hasAzevedo = normalizedText.includes('azevedo');
+        const hasName = normalizedText.includes('fabio') && normalizedText.includes('russo') && normalizedText.includes('azevedo');
+        const hasType = normalizedText.includes('pix') || normalizedText.includes('comprovante') || normalizedText.includes('pagamento');
         
-        // We require finding Fabio Russo De Azevedo
-        if (hasFabio && hasRusso && hasDe && hasAzevedo) {
-          setIsAnalyzing(false);
-          setIsApproved(true);
+        const numericPrice = (ebook.price || "3,00").replace(/[^0-9]/g, '');
+        const hasPrice = normalizedText.includes(numericPrice);
+        
+        const currentYear = new Date().getFullYear().toString();
+        const hasYear = normalizedText.includes(currentYear);
+        
+        // Critério antifraude rigoroso
+        if (hasName && hasType && hasPrice && hasYear) {        setIsApproved(true);
           toast.success('Pagamento validado! E-book liberado com sucesso.');
         } else {
           setIsAnalyzing(false);
-          toast.error('❌ COMPROVANTE INVÁLIDO! Nosso sistema antifraude não identificou o pagamento legítimo para Fabio Russo De Azevedo. O acesso foi bloqueado.', {
-            duration: 6000,
+            toast.error('❌ COMPROVANTE INVÁLIDO! Nosso sistema antifraude não identificou a autenticidade do pagamento. O valor, a data ou os dados do recebedor (Fabio Russo) estão incorretos ou ausentes.', {
+              duration: 8000,
             style: {
               border: '1px solid #ef4444',
               padding: '16px',
