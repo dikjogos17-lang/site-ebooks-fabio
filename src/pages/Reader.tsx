@@ -29,7 +29,7 @@ const Reader = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${themeClasses[theme]}`}>
+    <div className={`min-h-screen transition-colors duration-300 select-none ${themeClasses[theme]}`} onContextMenu={(e) => e.preventDefault()}>
       {/* Header */}
       <header className={`fixed top-0 w-full z-50 border-b backdrop-blur-md transition-colors ${theme === 'dark' ? 'bg-slate-900/80 border-slate-800' : theme === 'sepia' ? 'bg-[#f4ecd8]/80 border-[#e4dcc8]' : 'bg-white/80 border-slate-200'}`}>
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -85,13 +85,27 @@ const Reader = () => {
           <BookOpen className="w-12 h-12 mx-auto mb-6 opacity-20" />
           <h1 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">{ebook.title}</h1>
           <p className="text-lg opacity-80 font-medium">Por {ebook.author}</p>
+          <p className="text-xs text-red-500 font-bold mt-2">🔒 Conteúdo protegido contra cópia.</p>
         </div>
 
         <article 
           className="prose prose-slate max-w-none transition-all duration-300"
           style={{ fontSize: `${fontSize}px`, lineHeight: 1.8 }}
         >
-          {(ebook.content || ebook.fullDescription || ebook.description).split('\n\n').map((paragraph: string, idx: number) => (
+          {(() => {
+            let text = ebook.content || ebook.fullDescription || ebook.description;
+            if (ebook.isEncrypted && ebook.content) {
+              try {
+                const binaryStr = window.atob(ebook.content);
+                const bytes = new Uint8Array(binaryStr.length);
+                for (let i = 0; i < binaryStr.length; i++) {
+                    bytes[i] = binaryStr.charCodeAt(i);
+                }
+                text = new TextDecoder().decode(bytes);
+              } catch(e) {}
+            }
+            return text;
+          })().split('\n\n').map((paragraph: string, idx: number) => (
             <p key={idx} className="mb-6 last:mb-0">
               {paragraph}
             </p>

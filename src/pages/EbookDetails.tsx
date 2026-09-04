@@ -110,8 +110,28 @@ const EbookDetails = () => {
       doc.setFontSize(14);
       doc.text(`Autor: ${ebook.author}`, 20, 50);
       
+            doc.setFontSize(12);
+      let contentText = ebook.content || ebook.fullDescription || ebook.description;
+      if (ebook.isEncrypted && ebook.content) {
+        try {
+          // Use Buffer if in Node, but this is browser so we use standard decode
+          const binaryStr = window.atob(ebook.content);
+          const bytes = new Uint8Array(binaryStr.length);
+          for (let i = 0; i < binaryStr.length; i++) {
+              bytes[i] = binaryStr.charCodeAt(i);
+          }
+          contentText = new TextDecoder().decode(bytes);
+        } catch(e) {
+          console.error('Decoding failed', e);
+        }
+      }
+      
+      // ADD WATERMARK
+      doc.setTextColor(200, 200, 200);
+      doc.setFontSize(40);
+      // We will add watermark in the loop below
+      doc.setTextColor(0, 0, 0); // reset color for text
       doc.setFontSize(12);
-      const contentText = ebook.content || ebook.fullDescription || ebook.description;
       const splitText = doc.splitTextToSize(contentText, 170);
       
       let y = 70;
@@ -119,6 +139,14 @@ const EbookDetails = () => {
         if (y > 280) {
           doc.addPage();
           y = 20;
+        }
+        // Watermark every page
+        if (y === 20 || y === 70) {
+          doc.setTextColor(230, 230, 230);
+          doc.setFontSize(30);
+          doc.text('CÓPIA PROTEGIDA - USO EXCLUSIVO', 30, 150, { angle: 45 });
+          doc.setTextColor(0, 0, 0);
+          doc.setFontSize(12);
         }
         doc.text(splitText[i], 20, y);
         y += 7;
