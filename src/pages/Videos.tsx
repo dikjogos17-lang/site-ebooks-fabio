@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play } from 'lucide-react';
+import { Play, ExternalLink } from 'lucide-react';
 import SEO from '../components/SEO';
 import { videoUrls } from '../data/videos';
 
@@ -26,38 +26,47 @@ const Videos = () => {
             Vídeos e Estudos
           </h1>
           <p className="text-lg text-slate-600">
-            Assista e compartilhe conteúdos exclusivos sobre a fé cristã.
+            A maioria destes vídeos são exclusivos para membros. Clique para assistir diretamente no Facebook!
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {videoUrls.slice(0, visibleCount).map((url, index) => {
-            const embedUrl = `https://www.facebook.com/plugins/video.php?height=600&href=${encodeURIComponent(url)}&show_text=false&width=340&t=0`;
-            
+            // Se for um link de grupo ou se quisermos garantir que funciona, usamos um card elegante
             return (
               <div key={index} className="flex justify-center">
-                <div className="relative border-slate-800 bg-slate-800 border-[12px] rounded-[2.5rem] shadow-xl shadow-slate-300/50 flex items-center justify-center transform transition-transform duration-300 hover:scale-[1.03] ring-1 ring-black/5" style={{ width: 340, height: 600 }}>
+                <a 
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative border-slate-800 bg-slate-800 border-[12px] rounded-[2.5rem] shadow-xl shadow-slate-300/50 flex items-center justify-center transform transition-transform duration-300 hover:scale-[1.03] hover:shadow-2xl ring-1 ring-black/5 group block" 
+                  style={{ width: 340, height: 600 }}
+                >
                   {/* Phone Notch */}
                   <div className="absolute top-0 inset-x-0 mx-auto w-24 h-5 bg-slate-800 rounded-b-xl z-20 flex justify-center items-center">
                     <div className="w-10 h-1 bg-slate-700/80 rounded-full mt-1"></div>
                   </div>
                   
-                  {/* Screen Content */}
-                  <div className="rounded-[1.8rem] overflow-hidden bg-black w-full h-full relative z-10 flex items-center justify-center">
-                    <iframe
-                      src={embedUrl}
-                      width="316"
-                      height="576"
-                      className="border-none w-full h-full object-cover bg-black"
-                      scrolling="no"
-                      frameBorder="0"
-                      allowFullScreen={true}
-                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                      title={`Vídeo ${index + 1}`}
-                      loading="lazy"
-                    ></iframe>
+                  {/* Screen Content - Premium CTA */}
+                  <div className="rounded-[1.8rem] overflow-hidden bg-slate-900 w-full h-full relative z-10 flex flex-col items-center justify-center p-8 text-center border border-slate-700">
+                    
+                    {/* Background glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20 opacity-50"></div>
+                    
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mb-8 shadow-lg shadow-blue-500/50 group-hover:scale-110 group-hover:bg-blue-500 transition-all duration-300">
+                        <Play className="w-10 h-10 text-white ml-2" fill="currentColor" />
+                      </div>
+                      
+                      <h3 className="text-white font-bold text-2xl mb-3">Vídeo {index + 1}</h3>
+                      <p className="text-slate-300 text-base mb-8">Conteúdo exclusivo do grupo. Assista no Facebook.</p>
+                      
+                      <div className="inline-flex items-center gap-2 text-blue-400 font-semibold group-hover:text-blue-300 transition-colors">
+                        Abrir vídeo <ExternalLink className="w-4 h-4" />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </a>
               </div>
             );
           })}
