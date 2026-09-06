@@ -19,6 +19,7 @@ const Header = () => {
   const navLinks = [
     { name: 'Início', path: '/' },
     { name: 'E-books', path: '/ebooks' },
+    { name: 'Vídeos', path: '/videos' },
     { name: 'Categorias', path: '/ebooks' },
     { name: 'Mais populares', path: '/ebooks?filter=populares' },
     { name: 'Sobre', path: '/about' },

@@ -14,6 +14,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Reader from './pages/Reader';
 import NotFound from './pages/NotFound';
+import Videos from './pages/Videos';
 
 // ScrollToTop component
 const ScrollToTop = () => {
@@ -44,6 +45,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/ebooks" element={<Ebooks />} />
+                  <Route path="/videos" element={<Videos />} />
                   <Route path="/ebook/:id" element={<EbookDetails />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
