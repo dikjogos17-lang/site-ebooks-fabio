@@ -1,4 +1,5 @@
 export const categories = [
+  "Estudos com Mapas Mentais",
   "Soteriologia & Graça",
   "Escatologia",
   "Doutrina & Teologia",
