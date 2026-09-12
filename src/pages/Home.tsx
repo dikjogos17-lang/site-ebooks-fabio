@@ -196,6 +196,31 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Mind Maps Showcase Banner */}
+      <section className="py-12 bg-gradient-to-r from-slate-900 via-primary-950 to-slate-900 text-white relative overflow-hidden border-y border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-2xl text-center md:text-left">
+            <span className="px-3 py-1 rounded-full bg-primary-500/20 text-primary-300 text-xs font-bold uppercase tracking-wider border border-primary-500/30 inline-block mb-3">
+              Novo Recurso Visual
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+              Estudos com Mapas Mentais
+            </h2>
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              Esquemas gráficos e diagramas teológicos esquematizados pelo Pr. Fabio Russo sobre escatologia, as 70 semanas, a graça e a caminhada cristã.
+            </p>
+          </div>
+          <div className="shrink-0">
+            <Link 
+              to="/mapas-mentais"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-xl shadow-lg shadow-primary-600/30 transition-all hover:scale-105 text-sm sm:text-base whitespace-nowrap"
+            >
+              Explorar Mapas Mentais &rarr;
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Popular E-books */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

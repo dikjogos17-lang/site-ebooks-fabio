@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Star, BookOpen, Download, FileText, Globe, Calendar, Heart, Eye, ArrowLeft, Upload, CheckCircle, Loader2, ZoomIn } from 'lucide-react';
+import { Star, BookOpen, Download, FileText, Globe, Calendar, Heart, Eye, ArrowLeft, Upload, CheckCircle, Loader2 } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
@@ -317,34 +317,6 @@ const EbookDetails = () => {
               </header>
               
               <div className="mb-10 flex-grow">
-                {ebook.category === 'Estudos com Mapas Mentais' && (
-                  <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-semibold text-primary-700 flex items-center gap-1.5">
-                        <ZoomIn className="w-4 h-4" /> Visualizar Mapa Mental em Alta Resolução
-                      </span>
-                      <a 
-                        href={ebook.capa} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-xs text-primary-600 hover:text-primary-800 font-medium underline"
-                      >
-                        Abrir imagem original ↗
-                      </a>
-                    </div>
-                    <div className="rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
-                      <img 
-                        src={ebook.capa} 
-                        alt={ebook.title} 
-                        className="w-full h-auto object-contain max-h-[550px] cursor-pointer hover:scale-[1.01] transition-transform"
-                        onClick={() => window.open(ebook.capa, '_blank')}
-                        title="Clique para abrir em tela cheia"
-                      />
-                    </div>
-                    <p className="text-xs text-slate-500 text-center mt-2">Clique na imagem para ampliar e ler cada detalhe do esquema bíblico</p>
-                  </div>
-                )}
-
                 <h2 className="text-xl font-bold text-slate-900 mb-4">Descrição do Estudo</h2>
                 <div className="space-y-4 text-slate-700 leading-relaxed">
                   {(ebook.fullDescription || ebook.description).split('\n\n').map((paragraph: string, idx: number) => (

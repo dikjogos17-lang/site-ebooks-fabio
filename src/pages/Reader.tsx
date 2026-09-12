@@ -88,17 +88,6 @@ const Reader = () => {
           <p className="text-xs text-red-500 font-bold mt-2">🔒 Conteúdo protegido contra cópia.</p>
         </div>
 
-        {ebook.category === 'Estudos com Mapas Mentais' && (
-          <div className="mb-12 rounded-2xl overflow-hidden border border-slate-200/80 shadow-xl bg-white p-2">
-            <img 
-              src={ebook.capa} 
-              alt={ebook.title} 
-              className="w-full h-auto rounded-xl"
-            />
-            <p className="text-xs text-center text-slate-500 py-2">Esquema visual do Mapa Mental — Pr. Fabio Russo</p>
-          </div>
-        )}
-
         <article 
           className="prose prose-slate max-w-none transition-all duration-300"
           style={{ fontSize: `${fontSize}px`, lineHeight: 1.8 }}
