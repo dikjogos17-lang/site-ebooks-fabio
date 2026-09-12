@@ -1,7 +1,7 @@
 export const categories = [
-  "Teologia",
-  "Bíblia",
+  "Soteriologia & Graça",
   "Escatologia",
-  "Doutrina",
-  "Estudos Bíblicos"
+  "Doutrina & Teologia",
+  "Estudos Bíblicos",
+  "Vida Cristã & Discipulado"
 ];
