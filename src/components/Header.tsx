@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Search } from 'lucide-react';
+import { Search, Menu, X, Crown } from 'lucide-react';
 import clsx from 'clsx';
 
 const Header = () => {
@@ -19,10 +19,9 @@ const Header = () => {
   const navLinks = [
     { name: 'Início', path: '/' },
     { name: 'E-books', path: '/ebooks' },
+    { name: 'E-books Pagos', path: '/premium', isHighlight: true },
     { name: 'Mapas Mentais', path: '/mapas-mentais' },
     { name: 'Vídeos', path: '/videos' },
-    { name: 'Categorias', path: '/ebooks' },
-    { name: 'Mais populares', path: '/ebooks?filter=populares' },
     { name: 'Sobre', path: '/about' },
     { name: 'Contato', path: '/contact' },
   ];
@@ -37,13 +36,18 @@ const Header = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-slate-600 hover:text-primary-600 font-medium transition-colors"
+                className={
+                  link.isHighlight
+                    ? "inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 border border-amber-300/80 rounded-full font-bold text-xs hover:bg-amber-100 hover:border-amber-400 transition-all shadow-sm"
+                    : "text-slate-600 hover:text-primary-600 font-medium transition-colors text-sm"
+                }
               >
+                {link.isHighlight && <Crown className="w-3.5 h-3.5 text-amber-500" />}
                 {link.name}
               </Link>
             ))}
@@ -97,9 +101,14 @@ const Header = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-slate-600 hover:text-primary-600 font-medium px-2 py-1"
+                className={
+                  link.isHighlight
+                    ? "flex items-center gap-2 text-amber-700 bg-amber-50 border border-amber-300 font-bold px-3 py-2 rounded-xl text-sm"
+                    : "text-slate-600 hover:text-primary-600 font-medium px-2 py-1"
+                }
                 onClick={() => setIsOpen(false)}
               >
+                {link.isHighlight && <Crown className="w-4 h-4 text-amber-500" />}
                 {link.name}
               </Link>
             ))}

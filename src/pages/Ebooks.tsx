@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSearchParams, Link } from 'react-router-dom';
+import { Search, Filter, X, ChevronLeft, ChevronRight, Crown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EbookCard from '../components/EbookCard';
 import SEO from '../components/SEO';
@@ -14,6 +14,7 @@ const Ebooks = () => {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [sortBy, setSortBy] = useState(searchParams.get('filter') || 'recentes');
+  const [accessType, setAccessType] = useState(searchParams.get('tipo') || 'todos');
 
   // Pagination state
   const currentPageParam = parseInt(searchParams.get('page') || '1', 10);
@@ -22,6 +23,7 @@ const Ebooks = () => {
   useEffect(() => {
     setSearchQuery(searchParams.get('q') || '');
     setSelectedCategory(searchParams.get('category') || '');
+    setAccessType(searchParams.get('tipo') || 'todos');
     const filter = searchParams.get('filter');
     if (filter === 'populares') setSortBy('populares');
     
@@ -47,6 +49,7 @@ const Ebooks = () => {
     setSearchQuery('');
     setSelectedCategory('');
     setSortBy('recentes');
+    setAccessType('todos');
     setCurrentPage(1);
     setSearchParams(new URLSearchParams());
   };
@@ -62,8 +65,12 @@ const Ebooks = () => {
           catName.toLowerCase().includes(searchQuery.toLowerCase());
         
         const matchesCategory = selectedCategory === '' || catName === selectedCategory;
+
+        const matchesAccess = accessType === 'todos' || 
+          (accessType === 'pagos' && ebook.isPaid) || 
+          (accessType === 'gratuitos' && !ebook.isPaid);
         
-        return matchesSearch && matchesCategory;
+        return matchesSearch && matchesCategory && matchesAccess;
       })
       .sort((a, b) => {
         if (sortBy === 'populares') return (b.views || 0) - (a.views || 0);
@@ -71,7 +78,7 @@ const Ebooks = () => {
         // Recentes
         return new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
       });
-  }, [searchQuery, selectedCategory, sortBy]);
+  }, [searchQuery, selectedCategory, sortBy, accessType]);
 
   // Pagination Logic
   const totalPages = Math.ceil(filteredEbooks.length / ITEMS_PER_PAGE);
@@ -161,6 +168,46 @@ const Ebooks = () => {
                 </div>
 
                 <div>
+                  <h3 className="text-sm font-medium text-slate-700 mb-2">Tipo de Acesso</h3>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => updateParams({ tipo: '', page: '1' })}
+                      className={`block w-full text-left text-sm px-3 lg:px-2 py-2 lg:py-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                        accessType === 'todos'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
+                          : 'text-slate-600 hover:bg-slate-100'
+                      }`}
+                    >
+                      Todos os E-books
+                    </button>
+                    <button
+                      onClick={() => updateParams({ tipo: 'gratuitos', page: '1' })}
+                      className={`block w-full text-left text-sm px-3 lg:px-2 py-2 lg:py-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                        accessType === 'gratuitos'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
+                          : 'text-slate-600 hover:bg-slate-100'
+                      }`}
+                    >
+                      Apenas Gratuitos
+                    </button>
+                    <button
+                      onClick={() => updateParams({ tipo: 'pagos', page: '1' })}
+                      className={`flex items-center justify-between w-full text-left text-sm px-3 lg:px-2 py-2 lg:py-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                        accessType === 'pagos'
+                          ? 'bg-amber-100 text-amber-900 font-bold'
+                          : 'text-amber-800 bg-amber-50/60 hover:bg-amber-100/80 font-medium'
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <Crown className="w-3.5 h-3.5 text-amber-600" />
+                        E-books Pagos
+                      </span>
+                      <span className="text-[10px] bg-amber-200/80 text-amber-900 px-1.5 py-0.5 rounded font-bold">R$ 3</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
                   <h3 className="text-sm font-medium text-slate-700 mb-2">Categorias</h3>
                   <div className="space-y-2">
                     <button
@@ -200,6 +247,25 @@ const Ebooks = () => {
 
           {/* Grid & Pagination */}
           <main className="lg:w-3/4">
+            {/* Callout Banner para Área Reservada de E-books Pagos */}
+            <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-slate-100 border border-amber-300/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-amber-100 border border-amber-300/80 flex items-center justify-center shrink-0 shadow-sm">
+                  <Crown className="w-5 h-5 text-amber-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">Área Reservada aos E-books Pagos</h4>
+                  <p className="text-xs text-slate-600">Estudos bíblicos exclusivos e aprofundados com liberação instantânea via Pix.</p>
+                </div>
+              </div>
+              <Link 
+                to="/premium"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-colors whitespace-nowrap shadow-sm"
+              >
+                Ver Área Reservada &rarr;
+              </Link>
+            </div>
+
             <div className="mb-4 text-sm text-slate-500" aria-live="polite">
               {filteredEbooks.length > 0 ? (
                 <span>Mostrando {paginatedEbooks.length} de {filteredEbooks.length} e-books</span>

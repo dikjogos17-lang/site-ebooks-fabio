@@ -16,6 +16,7 @@ import Reader from './pages/Reader';
 import NotFound from './pages/NotFound';
 import Videos from './pages/Videos';
 import MindMaps from './pages/MindMaps';
+import PremiumEbooks from './pages/PremiumEbooks';
 
 // ScrollToTop component
 const ScrollToTop = () => {
@@ -46,6 +47,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/ebooks" element={<Ebooks />} />
+                  <Route path="/premium" element={<PremiumEbooks />} />
                   <Route path="/mapas-mentais" element={<MindMaps />} />
                   <Route path="/videos" element={<Videos />} />
                   <Route path="/ebook/:id" element={<EbookDetails />} />

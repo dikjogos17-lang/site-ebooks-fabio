@@ -29,8 +29,8 @@ const EbookCard: React.FC<EbookCardProps> = ({ ebook }) => {
             {ebook.category}
           </span>
           {ebook.isPaid && (
-            <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-[10px] sm:text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-1">
-              Premium
+            <span className="px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded text-[10px] sm:text-xs font-bold inline-flex items-center gap-1 shadow-sm">
+              👑 {ebook.price || "R$ 3,00"}
             </span>
           )}
         </div>

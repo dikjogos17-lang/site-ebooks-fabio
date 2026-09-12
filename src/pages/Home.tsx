@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Star, ArrowRight } from 'lucide-react';
+import { BookOpen, Star, ArrowRight, Crown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import EbookCard from '../components/EbookCard';
 import SEO from '../components/SEO';
@@ -119,6 +119,35 @@ const Home = () => {
       </section>
       )}
 
+      {/* Coleção Exclusiva - E-books Pagos */}
+      <section className="py-16 bg-slate-100/70 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold uppercase tracking-wider mb-3">
+                <Crown className="w-3.5 h-3.5 text-amber-600" />
+                Área Reservada
+              </div>
+              <h2 className="text-3xl font-extrabold text-slate-900">E-books Pagos do Pr. Fabio Russo</h2>
+              <p className="text-slate-600 text-base mt-1 max-w-2xl">
+                Obras mais extensas e aprofundadas com liberação automática e download de PDF completo por apenas cerca de R$ 3,00.
+              </p>
+            </div>
+            <Link 
+              to="/premium"
+              className="inline-flex items-center gap-2 text-sm font-bold text-amber-800 hover:text-amber-900 bg-amber-200/80 hover:bg-amber-300 border border-amber-300 px-4 py-2.5 rounded-xl transition-all shadow-sm whitespace-nowrap self-start md:self-auto"
+            >
+              Conhecer a Área Reservada &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {ebooks.filter(e => e.isPaid).map((ebook) => (
+              <EbookCard key={ebook.id} ebook={ebook} />
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Featured Video Section */}
       <section className="py-20 lg:py-28 relative overflow-hidden bg-slate-900 text-white">
